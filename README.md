@@ -46,7 +46,11 @@ cp scripts/.env.example scripts/.env    # fill in OPENROUTER_API_KEY, DB creds, 
 
 ### 2. Database
 
-Create a MySQL database and import the schema. See `scripts/db_utils.py` for table structure (`images`, `questions`, `models`, `runs`, `error_logs`, `categories`).
+Create a MySQL database and import the schema:
+
+```bash
+mysql -u youruser -p yourdbname < database/schema.sql
+```
 
 ### 3. Python environment
 
@@ -55,7 +59,17 @@ cd scripts
 uv sync    # creates .venv and installs all dependencies
 ```
 
-### 4. Web server
+### 4. Admin password
+
+Generate a bcrypt hash and set it in `config.php`:
+
+```bash
+php -r "echo password_hash('yourpassword', PASSWORD_DEFAULT);"
+```
+
+Paste the output as the value of `ADMIN_PASSWORD_HASH` in `config.php`. Login at `/admin/login.php`.
+
+### 5. Web server
 
 Point your document root at `public_html/`. The `config.php` in the project root must be readable by PHP but **must not be web-accessible**.
 
@@ -65,6 +79,8 @@ DocumentRoot /path/to/aiimagequest/public_html
 ```
 
 The `temp_uploads/` directory must be writable by the web server user.
+
+> **`PYTHON_BIN` path**: Linux/macOS use `scripts/.venv/bin/python`; Windows uses `scripts/.venv/Scripts/python.exe`.
 
 ## Usage
 
@@ -88,7 +104,7 @@ Finds all images with missing descriptions and generates them via AI.
 
 ### Add images
 
-Visit `/admin/add_image.php` in your browser (restrict access via web server auth).
+Log in at `/admin/login.php`, then visit `/admin/add_image.php`.
 
 ## Configuration
 

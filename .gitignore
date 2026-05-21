@@ -16,6 +16,9 @@ public_html/admin/check_env.php
 public_html/admin/upload_test.php
 public_html/admin/debug.log
 
+# Generated description sidecars
+public_html/images/*.txt
+
 # OS / editor
 .DS_Store
 Thumbs.db
