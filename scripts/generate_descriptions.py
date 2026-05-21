@@ -1,9 +1,9 @@
 import time
 
-import data_loader
 import api_client
-import db_utils
 import config
+import data_loader
+import db_utils
 
 DESCRIPTION_MODEL = "openai/gpt-5"
 

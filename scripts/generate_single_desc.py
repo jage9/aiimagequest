@@ -1,11 +1,12 @@
-import sys
 import os
+import sys
+
 from dotenv import load_dotenv
 
 load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 
-import api_client
-import config
+import api_client  # noqa: E402
+import config  # noqa: E402
 
 DESCRIPTION_MODEL = "openai/gpt-5"
 

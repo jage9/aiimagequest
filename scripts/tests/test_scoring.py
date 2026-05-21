@@ -1,4 +1,3 @@
-import pytest
 from scoring import score_answer
 
 
@@ -32,7 +31,8 @@ class TestNotFound:
         assert score_answer("Information not available", "anything") == "Not Found"
 
     def test_phrase_embedded_in_longer_response(self):
-        assert score_answer("Sorry, information not available for this image.", "anything") == "Not Found"
+        result = score_answer("Sorry, information not available for this image.", "anything")
+        assert result == "Not Found"
 
     def test_case_insensitive_phrase(self):
         assert score_answer("INFORMATION NOT AVAILABLE", "anything") == "Not Found"

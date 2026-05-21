@@ -1,10 +1,10 @@
 import time
 
-import data_loader
 import api_client
-import scoring
-import db_utils
 import config
+import data_loader
+import db_utils
+import scoring
 
 
 def main():
@@ -34,7 +34,10 @@ def main():
                 question_id = question['question_id']
                 image_filename = question['filename']
 
-                print(f"  - ({i+1}/{len(pending_questions)}) Testing Q#{question_id} on '{image_filename}'...")
+                print(
+                    f"  - ({i+1}/{len(pending_questions)}) Testing Q#{question_id}"
+                    f" on '{image_filename}'..."
+                )
 
                 image_url = f"{config.BASE_URL}/images/{image_filename}"
                 prompt_text = config.PROMPT_TEMPLATES[config.CURRENT_PROMPT_VERSION].format(
@@ -47,10 +50,13 @@ def main():
                     print(f"    API Error: {result['error'][:100]}")
                     db_utils.log_error(question_id, model_id, result['error'], conn=conn)
                 else:
-                    score = scoring.score_answer(result['response_text'], question['correct_answer'])
+                    score = scoring.score_answer(
+                        result['response_text'], question['correct_answer']
+                    )
                     print(f"    Success! Score: {score}")
                     db_utils.log_run(
-                        question_id, model_id, result, score, config.CURRENT_PROMPT_VERSION, conn=conn
+                        question_id, model_id, result, score,
+                        config.CURRENT_PROMPT_VERSION, conn=conn,
                     )
 
                 time.sleep(1)

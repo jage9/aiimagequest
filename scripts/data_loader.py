@@ -1,6 +1,7 @@
 # Import our database connection utility
 import db_utils
 
+
 def get_models_to_run():
     """
     Fetches a list of all models from the database.
