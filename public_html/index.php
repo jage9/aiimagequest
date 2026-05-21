@@ -49,7 +49,7 @@ $categoriesResult = $conn->query("SELECT id, name FROM categories ORDER BY name 
         <tbody>
             <?php while($row = $mainLeaderboardResult->fetch_assoc()): ?>
             <tr>
-                <th scope="row"><a href="model.php?id=<?php echo $row['model_id']; ?>"><?php echo htmlspecialchars($row['provider'] . ': ' . $row['api_identifier']); ?></a></th>
+                <th scope="row"><a href="model.php?id=<?php echo (int) $row['model_id']; ?>"><?php echo htmlspecialchars($row['provider'] . ': ' . $row['api_identifier']); ?></a></th>
                 <td><?php echo round($row['correct_pct'], 1); ?>%</td>
                 <td><?php echo round($row['incorrect_pct'], 1); ?>%</td>
                 <td><?php echo round($row['not_found_pct'], 1); ?>%</td>
@@ -96,7 +96,7 @@ $categoriesResult = $conn->query("SELECT id, name FROM categories ORDER BY name 
                 <tbody>
                     <?php while($row = $categoryLeaderboardResult->fetch_assoc()): ?>
                     <tr>
-                        <th scope="row"><a href="model.php?id=<?php echo $row['model_id']; ?>"><?php echo htmlspecialchars($row['provider'] . ': ' . $row['api_identifier']); ?></a></th>
+                        <th scope="row"><a href="model.php?id=<?php echo (int) $row['model_id']; ?>"><?php echo htmlspecialchars($row['provider'] . ': ' . $row['api_identifier']); ?></a></th>
                         <td><?php echo round($row['correct_pct'], 1); ?>%</td>
                     </tr>
                     <?php endwhile; ?>

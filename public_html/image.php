@@ -118,7 +118,7 @@ $breakdownResult = $stmt->get_result();
     <h2>Model-by-Model Breakdown</h2>
     <?php while ($row = $breakdownResult->fetch_assoc()): ?>
         <h3>
-            <a href="model.php?id=<?php echo $row['model_id']; ?>">
+            <a href="model.php?id=<?php echo (int) $row['model_id']; ?>">
                 <?php echo htmlspecialchars($row['provider'] . ': ' . $row['api_identifier']); ?>
             </a>
         </h3>

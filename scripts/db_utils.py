@@ -57,9 +57,15 @@ def log_run(question_id, model_id, run_data, score, prompt_version, conn=None):
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     values = (
-        question_id, model_id, run_data['response_text'], score, prompt_version,
-        run_data['latency_ms'], run_data['prompt_tokens'],
-        run_data['completion_tokens'], run_data['cost'],
+        question_id,
+        model_id,
+        run_data["response_text"],
+        score,
+        prompt_version,
+        run_data["latency_ms"],
+        run_data["prompt_tokens"],
+        run_data["completion_tokens"],
+        run_data["cost"],
     )
     return _execute(sql, values, conn)
 

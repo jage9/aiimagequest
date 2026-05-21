@@ -20,21 +20,21 @@ def main():
 
     with db_utils.db_connection() as conn:
         for i, image in enumerate(images_to_process):
-            image_id = image['id']
-            image_filename = image['filename']
+            image_id = image["id"]
+            image_filename = image["filename"]
 
-            print(f"\n- ({i+1}/{len(images_to_process)}) Processing '{image_filename}'...")
+            print(f"\n- ({i + 1}/{len(images_to_process)}) Processing '{image_filename}'...")
 
             image_url = f"{config.BASE_URL}/images/{image_filename}"
             result = api_client.query_model_with_image(
                 image_url, config.description_GENERATION_PROMPT, DESCRIPTION_MODEL
             )
 
-            if 'error' in result:
+            if "error" in result:
                 print(f"  API Error for '{image_filename}': {result['error'][:100]}")
             else:
                 print("  Generated description, saving to database...")
-                db_utils.update_image_description(image_id, result['response_text'], conn=conn)
+                db_utils.update_image_description(image_id, result["response_text"], conn=conn)
 
             time.sleep(1)
 

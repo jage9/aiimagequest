@@ -3,10 +3,10 @@ import os
 BASE_URL = os.getenv("SITE_BASE_URL", "https://aiimagequest.com")
 
 # --- Prompt Templates ---
-CURRENT_PROMPT_VERSION = 'v1.0'
+CURRENT_PROMPT_VERSION = "v1.0"
 
 PROMPT_TEMPLATES = {
-    'v1.0': (
+    "v1.0": (
         "You are an AI assistant serving as a visual interpreter for a blind user. "
         "Your primary goal is to provide a direct and factual answer to the question "
         "about the provided image.\n"
@@ -33,4 +33,3 @@ description_GENERATION_PROMPT = (
     "If any text is clearly legible, transcribe it. It is crucial that you remain strictly "
     "objective; do not interpret meaning, infer emotions, or suggest actions."
 )
-

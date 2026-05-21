@@ -3,7 +3,7 @@ import sys
 
 from dotenv import load_dotenv
 
-load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
+load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
 import api_client  # noqa: E402
 import config  # noqa: E402
@@ -21,9 +21,9 @@ if __name__ == "__main__":
         result = api_client.query_model_with_base64(
             base64_image, config.description_GENERATION_PROMPT, DESCRIPTION_MODEL
         )
-        if 'error' in result:
+        if "error" in result:
             sys.exit(1)
-        print(result['response_text'])
+        print(result["response_text"])
         sys.stdout.flush()
     except Exception:
         sys.exit(1)

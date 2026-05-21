@@ -24,6 +24,7 @@ def get_models_to_run():
             conn.close()
     return models
 
+
 def get_pending_questions_for_model(model_id):
     """
     Finds all questions that do not have a result in the 'runs' table for a given model_id.
@@ -48,7 +49,7 @@ def get_pending_questions_for_model(model_id):
         LEFT JOIN runs r ON q.id = r.question_id AND r.model_id = %s
         WHERE r.id IS NULL
     """
-    
+
     pending_questions = []
     try:
         cursor = conn.cursor(dictionary=True)
@@ -61,6 +62,7 @@ def get_pending_questions_for_model(model_id):
             cursor.close()
             conn.close()
     return pending_questions
+
 
 def get_images_needing_description():
     """
