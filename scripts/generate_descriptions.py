@@ -5,7 +5,7 @@ import config
 import data_loader
 import db_utils
 
-DESCRIPTION_MODEL = "openai/gpt-4o-latest"
+DESCRIPTION_MODEL = "openai/gpt-latest"
 
 
 def main():
