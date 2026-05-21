@@ -2,6 +2,11 @@
 config.php
 scripts/.env
 
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
 # Python environments
 scripts/venv/
 scripts/.venv/
