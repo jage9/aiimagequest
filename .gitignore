@@ -1,0 +1,22 @@
+# Credentials & secrets
+config.php
+scripts/.env
+
+# Python environments
+scripts/venv/
+scripts/.venv/
+
+# Temporary uploads (runtime)
+temp_uploads/*
+!temp_uploads/.gitkeep
+
+# Admin debug/test files
+public_html/admin/phpinfo.php
+public_html/admin/check_env.php
+public_html/admin/upload_test.php
+public_html/admin/debug.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log

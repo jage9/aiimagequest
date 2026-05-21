@@ -1,0 +1,10 @@
+parameters:
+    paths:
+        - public_html
+    level: 3
+    bootstrapFiles:
+        - config.example.php
+    excludePaths:
+        - public_html/admin/phpinfo.php
+        - public_html/admin/check_env.php
+        - public_html/admin/upload_test.php
