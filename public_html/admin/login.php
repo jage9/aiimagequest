@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['password'])) {
         header('Location: add_image.php');
         exit;
     }
+    sleep(1);
     $error = 'Invalid password.';
 }
 ?>

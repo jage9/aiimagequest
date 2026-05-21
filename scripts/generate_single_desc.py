@@ -8,7 +8,7 @@ load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 import api_client  # noqa: E402
 import config  # noqa: E402
 
-DESCRIPTION_MODEL = "openai/gpt-5"
+DESCRIPTION_MODEL = "openai/gpt-4o-latest"
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
