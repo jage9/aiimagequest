@@ -1,29 +1,34 @@
 # AI Image Quest
 
-A benchmarking platform that evaluates AI vision models on their ability to correctly answer questions about images. Models are tested via [OpenRouter](https://openrouter.ai) and results are displayed on a public leaderboard.
+Benchmarking platform that tests how accurately AI vision models can read and interpret real-world images — text on signs, product labels, safety information, and similar content relevant to accessibility use cases. Models are evaluated via [OpenRouter](https://openrouter.ai) and ranked on a public leaderboard.
+
+## How it works
+
+1. Images are uploaded through the admin panel, each paired with a specific question and correct answer
+2. The Python benchmark engine queries every configured model with each image + question
+3. Responses are scored using exact match, fuzzy match, and pattern detection for refusals
+4. Results are stored in MySQL and displayed on the public leaderboard at `public_html/index.php`
 
 ## Architecture
 
 ```
 aiimagequest/
 ├── config.php              # DB credentials & path constants (gitignored — copy from config.example.php)
-├── public_html/            # PHP web frontend (point web server here)
-│   ├── index.php           # Main leaderboard
+├── config.example.php      # Safe-to-commit template
+├── public_html/            # PHP web frontend (document root)
+│   ├── index.php           # Leaderboard
 │   ├── images.php          # Image browser with category filter
-│   ├── image.php           # Per-image detail & model breakdown
-│   ├── db_connect.php      # mysqli connection factory
-│   └── admin/              # Image upload & management tools
-├── scripts/                # Python backend
+│   ├── image.php           # Per-image model breakdown
+│   └── admin/              # Image upload & management (session-protected)
+├── scripts/                # Python benchmark engine
 │   ├── benchmark.py        # Run evaluations against all pending model/question pairs
-│   ├── generate_descriptions.py  # Bulk-generate image descriptions via AI
-│   ├── generate_single_desc.py   # Single image description (called by PHP admin)
+│   ├── generate_descriptions.py  # Bulk AI description generation
 │   ├── api_client.py       # OpenRouter API wrapper
-│   ├── data_loader.py      # DB read helpers
-│   ├── db_utils.py         # DB write helpers
 │   ├── scoring.py          # 4-tier scoring logic
-│   ├── config.py           # Prompt templates, scoring threshold, BASE_URL
 │   ├── pyproject.toml      # Dependencies (Python 3.13+, managed by uv)
 │   └── .env                # API keys & DB credentials (gitignored — copy from .env.example)
+├── database/
+│   └── schema.sql          # Full MySQL schema
 └── temp_uploads/           # Transient image uploads (content gitignored)
 ```
 
@@ -34,6 +39,7 @@ aiimagequest/
 - PHP 8.0+ with `mysqli` extension
 - MySQL 8.0+
 - [uv](https://docs.astral.sh/uv/) (Python package manager)
+- An [OpenRouter](https://openrouter.ai) API key
 
 ### 1. Clone & configure
 
@@ -67,20 +73,18 @@ Generate a bcrypt hash and set it in `config.php`:
 php -r "echo password_hash('yourpassword', PASSWORD_DEFAULT);"
 ```
 
-Paste the output as the value of `ADMIN_PASSWORD_HASH` in `config.php`. Login at `/admin/login.php`.
+Paste the output as the value of `ADMIN_PASSWORD_HASH` in `config.php`. Log in at `/admin/login.php`.
 
 ### 5. Web server
 
-Point your document root at `public_html/`. The `config.php` in the project root must be readable by PHP but **must not be web-accessible**.
+Point your document root at `public_html/`. The `config.php` at the project root must be readable by PHP but **must not be web-accessible**.
 
 ```apache
 # Apache example
 DocumentRoot /path/to/aiimagequest/public_html
 ```
 
-The `temp_uploads/` directory must be writable by the web server user.
-
-> **`PYTHON_BIN` path**: Linux/macOS use `scripts/.venv/bin/python`; Windows uses `scripts/.venv/Scripts/python.exe`.
+Make `temp_uploads/` writable by the web server user.
 
 ## Usage
 
@@ -108,19 +112,22 @@ Log in at `/admin/login.php`, then visit `/admin/add_image.php`.
 
 ## Configuration
 
-| File | Purpose |
-|------|---------|
-| `config.php` | PHP: DB credentials, derived path constants (`BASE_DIR`, `TEMP_UPLOADS_DIR`, etc.) |
-| `scripts/.env` | Python: `OPENROUTER_API_KEY`, DB credentials, `SITE_BASE_URL` |
-| `scripts/config.py` | Prompt templates, fuzzy match threshold, `BASE_URL` default |
+| File | Key setting | Notes |
+|------|-------------|-------|
+| `config.php` | `DB_*` credentials | Also defines path constants (`BASE_DIR`, `TEMP_UPLOADS_DIR`, etc.) |
+| `config.php` | `ADMIN_PASSWORD_HASH` | Output of `password_hash()` — see setup step 4 |
+| `config.php` | `PYTHON_BIN` | Path to venv Python: `.venv/bin/python` (Linux/macOS) or `.venv/Scripts/python.exe` (Windows) |
+| `scripts/.env` | `OPENROUTER_API_KEY` | Required for benchmarks and description generation |
+| `scripts/.env` | `SITE_BASE_URL` | Public URL of the site, used to build image URLs for API calls |
+| `scripts/config.py` | `FUZZY_MATCH_THRESHOLD` | Similarity score (0–100) for fuzzy correct matches, default 90 |
 
 ## Scoring
 
-Each model response scores as one of four outcomes:
+Each model response is classified as one of four outcomes:
 
 | Score | Meaning |
 |-------|---------|
-| **Correct** | Exact match or fuzzy similarity ≥ 90% |
-| **Incorrect** | Answer present but wrong |
-| **Not Found** | Model responded "Information not available" |
-| **Refusal** | Model refused to answer |
+| **Correct** | Answer matches exactly, or fuzzy similarity ≥ 90% |
+| **Incorrect** | Model gave a definite answer but it was wrong |
+| **Not Found** | Model indicated the information wasn't visible in the image |
+| **Refusal** | Model declined to answer (content policy, safety filter, etc.) |
