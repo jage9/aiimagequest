@@ -9,14 +9,14 @@ Benchmarking platform that tests how accurately AI vision models can read and in
 1. Images are uploaded through the admin panel, each paired with a specific question and correct answer
 2. The Python benchmark engine queries every configured model with each image + question
 3. Responses are scored using exact match, fuzzy match, and pattern detection for refusals
-4. Results are stored in MySQL and displayed on the public leaderboard at `public_html/index.php`
+4. Results are stored in MySQL and displayed on the public leaderboard
 
 ## Architecture
 
 ```
 aiimagequest/
-├── config.php              # DB credentials & path constants (gitignored — copy from config.example.php)
-├── config.example.php      # Safe-to-commit template
+├── config.php              # DB credentials & path constants (not committed — copy from config.example.php)
+├── config.example.php      # Configuration template
 ├── public_html/            # PHP web frontend (document root)
 │   ├── index.php           # Leaderboard
 │   ├── images.php          # Image browser with category filter
@@ -28,10 +28,10 @@ aiimagequest/
 │   ├── api_client.py       # OpenRouter API wrapper
 │   ├── scoring.py          # 4-tier scoring logic
 │   ├── pyproject.toml      # Dependencies (Python 3.13+, managed by uv)
-│   └── .env                # API keys & DB credentials (gitignored — copy from .env.example)
+│   └── .env                # API keys & DB credentials (not committed — copy from .env.example)
 ├── database/
-│   └── schema.sql          # Full MySQL schema
-└── temp_uploads/           # Transient image uploads (content gitignored)
+│   └── schema.sql          # MySQL schema
+└── temp_uploads/           # Temporary image upload staging
 ```
 
 ## Setup
