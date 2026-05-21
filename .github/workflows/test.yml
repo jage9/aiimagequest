@@ -14,9 +14,9 @@ jobs:
         working-directory: scripts
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
 
-      - uses: astral-sh/setup-uv@v3
+      - uses: astral-sh/setup-uv@v6
 
       - name: Install dependencies
         run: uv sync --group dev
