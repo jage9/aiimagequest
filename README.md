@@ -1,8 +1,8 @@
 # AI Image Quest
 
-> **This is an early prototype. All feedback is welcome.**
-
 Benchmarking platform that tests how accurately AI vision models can read and interpret real-world images — text on signs, product labels, safety information, and similar content relevant to accessibility use cases. Models are evaluated via [OpenRouter](https://openrouter.ai) and ranked on a public leaderboard.
+
+> **This is an early prototype. All feedback is welcome.**
 
 ## How it works
 
